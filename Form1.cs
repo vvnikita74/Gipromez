@@ -87,7 +87,17 @@ namespace Gipromez
 
         private void button1_Click(object sender, EventArgs e)
         {
+            AuthForm authForm = new AuthForm();
 
+            int centerX = this.Location.X + (this.Width - authForm.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - authForm.Height) / 2;
+
+            // Установка начальной позиции Form2
+            authForm.StartPosition = FormStartPosition.Manual;
+            authForm.Location = new Point(centerX, centerY);
+
+
+            authForm.ShowDialog(this);
         }
     }
 }

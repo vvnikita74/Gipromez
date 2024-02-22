@@ -11,7 +11,11 @@ namespace Gipromez
 
         string connectionString = "Host=localhost;Port=5432;Username=adminPassword=9832;Database=users";
 
-        private bool CheckUserCredentials(string username, string password)
+        private bool dragging = false;
+        private Point dragCursorPoint;
+        private Point dragFormPoint;
+
+        private bool AuthorizeUser(string username, string password)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -30,6 +34,11 @@ namespace Gipromez
         {
             InitializeComponent();
 
+            // Handle mouse click
+            this.MouseDown += new MouseEventHandler(AuthForm_MouseDown);
+            this.MouseMove += new MouseEventHandler(AuthForm_MouseMove);
+            this.MouseUp += new MouseEventHandler(AuthForm_MouseUp);
+
             // Удаление стандартной рамки окна
             this.FormBorderStyle = FormBorderStyle.None;
 
@@ -44,6 +53,39 @@ namespace Gipromez
 
             // Применение формы к окну
             this.Region = new Region(path);
+
+        }
+
+        void AuthForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dragging = true;
+                dragCursorPoint = Cursor.Position;
+                dragFormPoint = this.Location;
+            }
+        }
+
+        void AuthForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point dif = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
+                this.Location = Point.Add(dragFormPoint, new Size(dif));
+            }
+        }
+
+        void AuthForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+
+        }
+
+        private void PictureBox1_Click(object sender, EventArgs e)
+        {
+
+
+            ActiveForm.Close();
 
         }
 
