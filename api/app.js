@@ -64,13 +64,13 @@ app.post('/login', async (req, res) => {
 
 app.get('/files', verifyToken, async (req, res) => {
   try {
-    // const result = await pool.query('SELECT file_name, file_path FROM files');
-    // res.json(result.rows);
-    res.json({ok: true})
+    const result = await pool.query('SELECT file_name, file_path FROM files')
+    res.json(result.rows)
   } catch (error) {
-    res.status(500).send('Ошибка сервера при получении файлов');
+    console.log(error)
+    res.status(500).send('Ошибка сервера при получении файлов')
   }
-});
+})
 
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
